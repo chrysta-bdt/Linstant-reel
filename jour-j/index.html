@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#9e5a74">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Jour J">
+<title>Jour J · L'instant réel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;1,6..96,400&family=Jost:wght@400;500;600&display=swap">
+<style>:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); } body { margin: 0; } [hidden] { display: none !important; }</style>
+<style>
+/* Layout: a field companion held in one hand on the wedding day; a list of days, then one day split into Planning / Plans / Infos / Checklists, big tap targets. */
+:root {
+  --bg: #f8eff2;
+  --surface: #fffafb;
+  --ink: #3b1f2c;
+  --muted: #7c5867;
+  --accent: #9e5a74;
+  --blush: #ecd3dc;
+  --line: rgba(59, 31, 44, .14);
+  --ok: #2f7a55;
+  --warn: #a86a12;
+  --btn-ink: #ffffff;
+  --display: "Bodoni Moda", "Didot", "Times New Roman", serif;
+  --body: "Jost", "Futura", "Avenir Next", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1d1016; --surface: #28161f; --ink: #f7e8ee; --muted: #c9a4b3; --accent: #e3a7bc;
+    --blush: #43263a; --line: rgba(247, 232, 238, .14); --ok: #7fd0a5; --warn: #e6b45a; --btn-ink: #2a1520; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1d1016; --surface: #28161f; --ink: #f7e8ee; --muted: #c9a4b3; --accent: #e3a7bc;
+  --blush: #43263a; --line: rgba(247, 232, 238, .14); --ok: #7fd0a5; --warn: #e6b45a; --btn-ink: #2a1520; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.5; }
+.wrap { max-width: 760px; margin: 0 auto; padding-block: 20px 48px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+button { font: inherit; cursor: pointer; color: inherit; }
+.eyebrow { font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin: 0; }
+h1 { font-family: var(--display); font-weight: 400; font-size: clamp(32px, 7vw, 46px); line-height: 1.05; margin: 4px 0 0; }
+h1 em { color: var(--accent); }
+header.top { display: flex; justify-content: space-between; align-items: end; gap: 12px; flex-wrap: wrap; }
+.primary { border: 0; background: var(--accent); color: var(--btn-ink); padding: 12px 18px; border-radius: 999px; font-weight: 500; }
+.ghost { border: 1px solid var(--line); background: transparent; padding: 10px 16px; border-radius: 999px; }
+.empty { background: var(--surface); border: 1px dashed var(--line); border-radius: 14px; padding: 24px; text-align: center; color: var(--muted); margin-top: 20px; }
+
+/* Liste des journées */
+.days { display: grid; gap: 12px; margin-top: 20px; }
+.day-card { text-align: left; width: 100%; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px; display: grid; gap: 6px; }
+.day-card:hover { border-color: var(--accent); }
+.day-card strong { font-family: var(--display); font-weight: 400; font-size: 24px; line-height: 1.1; }
+.meta { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 14px; color: var(--muted); }
+.badge { justify-self: start; font-size: 12px; padding: 2px 10px; border-radius: 999px; border: 1px solid currentColor; }
+.badge.today { color: var(--ok); font-weight: 600; }
+.badge.soon { color: var(--warn); }
+.badge.past { color: var(--muted); }
+.bar { height: 6px; border-radius: 6px; background: var(--blush); overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--accent); }
+details.past-days { margin-top: 20px; }
+details.past-days summary { cursor: pointer; color: var(--muted); }
+
+/* Une journée */
+.back { border: 0; background: transparent; color: var(--accent); padding: 0; font-weight: 500; }
+.day-head { display: grid; gap: 6px; margin-top: 10px; }
+.tabs { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); display: flex; gap: 6px; padding-block: 12px; overflow-x: auto; }
+.tabs button { flex: none; border: 1px solid var(--line); background: var(--surface); padding: 9px 16px; border-radius: 999px; font-weight: 500; color: var(--muted); }
+.tabs button[aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: var(--btn-ink); }
+.panel { display: grid; gap: 16px; }
+
+.timeline { list-style: none; padding: 0; margin: 0; display: grid; }
+.timeline li { display: grid; grid-template-columns: 64px 1fr; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.timeline li:last-child { border-bottom: 0; }
+.timeline time { font-variant-numeric: tabular-nums; font-weight: 600; }
+.timeline li.done { color: var(--muted); }
+.timeline li.now { background: var(--blush); border-radius: 10px; padding-inline: 10px; margin-inline: -10px; }
+.timeline li.now time::after { content: "En cours"; display: block; font-size: 11px; font-weight: 500; color: var(--accent); }
+
+.group { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 6px 14px 10px; }
+.group h2 { font-size: 13px; letter-spacing: .14em; text-transform: uppercase; margin: 10px 0 4px; display: flex; justify-content: space-between; gap: 10px; }
+.group h2 span { color: var(--muted); font-variant-numeric: tabular-nums; }
+.check { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); cursor: pointer; }
+.check:first-of-type { border-top: 0; }
+.check input { flex: none; width: 24px; height: 24px; margin: 0; accent-color: var(--accent); }
+.check span { min-width: 0; }
+.check.on span { color: var(--muted); text-decoration: line-through; }
+.add-row { display: flex; gap: 8px; margin-top: 8px; }
+.add-row input { flex: 1; }
+
+.info { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
+.info h2 { font-size: 13px; letter-spacing: .14em; text-transform: uppercase; margin: 0 0 6px; }
+.info p { margin: 0; white-space: pre-wrap; }
+.info.alert { border-color: var(--warn); }
+.info.alert h2 { color: var(--warn); }
+.muted { color: var(--muted); }
+
+/* Formulaire */
+dialog { border: 0; padding: 0; border-radius: 16px; width: min(600px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); background: var(--surface); color: var(--ink); }
+dialog::backdrop { background: rgba(22, 15, 17, .55); }
+form.sheet { padding: 20px; display: grid; gap: 14px; }
+form.sheet h3 { font-family: var(--display); font-weight: 400; font-size: 28px; margin: 0; }
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 480px) { .row { grid-template-columns: 1fr; } }
+label { display: grid; gap: 4px; font-size: 13px; color: var(--muted); min-width: 0; }
+input, select, textarea { font: inherit; font-size: 16px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; width: 100%; min-width: 0; }
+textarea { min-height: 90px; resize: vertical; }
+.help { font-size: 12px; color: var(--muted); }
+.actions { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; }
+.actions div { display: flex; gap: 10px; }
+.del { background: transparent; border: 0; color: var(--warn); padding: 10px 0; }
+.err { color: var(--warn); font-size: 13px; margin: 0; }
+.head-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.toast { margin: 4px 0 0; font-size: 14px; color: var(--ok); }
+.share-box { display: grid; gap: 8px; }
+.share-box textarea { min-height: 70px; font-size: 13px; }
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <section id="list-view">
+    <header class="top">
+      <div>
+        <p class="eyebrow">L'instant réel</p>
+        <h1>Jour <em>J</em></h1>
+      </div>
+      <button class="primary" id="new-day" type="button">+ Nouvelle journée</button>
+    </header>
+    <div id="list-status" class="empty">Chargement des journées…</div>
+    <div class="days" id="days"></div>
+    <details class="past-days" id="past-wrap" hidden><summary id="past-sum">Journées passées</summary><div class="days" id="past-days"></div></details>
+  </section>
+
+  <section id="day-view" hidden>
+    <button class="back" id="back" type="button">← Toutes les journées</button>
+    <div class="day-head">
+      <p class="eyebrow" id="d-eyebrow"></p>
+      <h1 id="d-title"></h1>
+      <div class="meta" id="d-meta"></div>
+      <div class="head-actions"><button class="ghost" id="edit-day" type="button">Modifier la fiche</button><button class="primary" id="share-day" type="button">Envoyer à la créatrice</button></div>
+      <p class="toast" id="toast" role="status" hidden></p>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Partie de la journée">
+      <button type="button" role="tab" data-tab="planning" aria-selected="true">Planning</button>
+      <button type="button" role="tab" data-tab="plans" aria-selected="false">Plans à filmer</button>
+      <button type="button" role="tab" data-tab="infos" aria-selected="false">Infos</button>
+      <button type="button" role="tab" data-tab="checks" aria-selected="false">Avant / Après</button>
+    </nav>
+    <div class="panel" id="panel"></div>
+  </section>
+</div>
+
+<dialog id="sheet">
+  <form class="sheet" id="form">
+    <h3 id="f-title">Nouvelle journée</h3>
+    <label>Prénoms du couple<input id="f-couple" required placeholder="ex : Kelia & Jose"></label>
+    <div class="row">
+      <label>Date<input id="f-date" type="date" required></label>
+      <label>Créatrice qui filme<input id="f-creatrice" placeholder="ex : Chrysta"></label>
+    </div>
+    <div class="row">
+      <label>Formule<select id="f-formule"><option value="">À définir</option><option>Intime</option><option>Signature</option><option>Éternité</option></select></label>
+      <label>Lieux<input id="f-lieux" placeholder="ex : Mairie du Lamentin, Domaine…"></label>
+    </div>
+    <label>Planning de la journée<textarea id="f-planning" placeholder="10:00 Préparatifs de la mariée&#10;14:30 Cérémonie à la mairie&#10;16:00 Shooting couple&#10;19:00 Entrée des mariés"></textarea>
+      <span class="help">Une ligne par moment, l'heure au début.</span></label>
+    <label>Personnes importantes à filmer<textarea id="f-vip" placeholder="Grand-mère de la mariée (robe bleue), témoins Laura et Kevin…"></textarea></label>
+    <label>À ne pas filmer<textarea id="f-eviter" placeholder="L'oncle Marc, pas de vidéo dans l'église…"></textarea></label>
+    <label>Surprises prévues<textarea id="f-surprises" placeholder="Danse des témoins après le repas, discours du papa…"></textarea></label>
+    <label>Contacts sur place<textarea id="f-contacts" placeholder="Témoin : Laura 0696 00 00 00&#10;Wedding planner : …"></textarea></label>
+    <label>Style et notes<textarea id="f-notes" placeholder="Ambiance émouvante, trends demandées, musique préférée…"></textarea></label>
+    <p class="err" id="f-err" hidden></p>
+    <div class="actions">
+      <button type="button" class="del" id="f-del" hidden>Supprimer la journée</button>
+      <div><button type="button" class="ghost" id="f-cancel">Annuler</button><button type="submit" class="primary" id="f-save">Enregistrer</button></div>
+    </div>
+  </form>
+</dialog>
+
+
+<script>
+(() => {
+  // Liste des plans de L'instant réel, par moment de la journée
+  const SHOTS = [
+    { id: "prep", label: "Préparatifs", items: [
+      ["p1", "Détails : robe sur cintre, chaussures, bijoux, parfum, faire-part"],
+      ["p2", "Maquillage et coiffure en gros plan"],
+      ["p3", "La mariée qui enfile sa robe (dos, boutons, voile)"],
+      ["p4", "Première réaction de la mariée devant le miroir"],
+      ["p5", "Réaction du papa ou de la maman en la découvrant"],
+      ["p6", "Le marié qui s'habille : boutons de manchette, nœud, montre"],
+      ["p7", "Les témoins et la famille, ambiance et rires"]
+    ]},
+    { id: "cer", label: "Cérémonie", items: [
+      ["c1", "Plan large du lieu et de la décoration"],
+      ["c2", "Le marié qui attend, sa réaction à l'arrivée de la mariée"],
+      ["c3", "Entrée de la mariée"],
+      ["c4", "Échange des alliances en gros plan (mains)"],
+      ["c5", "Le oui et le premier baiser"],
+      ["c6", "Réactions des parents et des invités (larmes, sourires)"],
+      ["c7", "Sortie des mariés : riz, pétales, applaudissements"]
+    ]},
+    { id: "couple", label: "Shooting couple", items: [
+      ["s1", "Marche main dans la main (de face et de dos)"],
+      ["s2", "Regards et front contre front, en gros plan"],
+      ["s3", "Ralenti 120 images/s : voile, robe qui tourne"],
+      ["s4", "Plans en mouvement : passer derrière une feuille ou un objet"],
+      ["s5", "Lumière dorée en fin de journée"],
+      ["s6", "Une trend demandée par les mariés"]
+    ]},
+    { id: "rec", label: "Réception", items: [
+      ["r1", "Décoration de la salle et des tables, avant l'arrivée des invités"],
+      ["r2", "Entrée des mariés"],
+      ["r3", "Discours et réactions"],
+      ["r4", "Découpe du gâteau"],
+      ["r5", "Première danse"],
+      ["r6", "Lancer de bouquet"],
+      ["r7", "Ambiance dancefloor et invités qui s'amusent"]
+    ]}
+  ];
+  const BEFORE = [
+    ["b1", "Téléphone chargé à 100 % et mémoire libérée"],
+    ["b2", "Batterie externe chargée et câble"],
+    ["b3", "Stabilisateur chargé"],
+    ["b4", "Micro et lumière chargés"],
+    ["b5", "Planning et adresses relus"],
+    ["b6", "Tenue propre et discrète, logo L'instant réel"]
+  ];
+  const AFTER = [
+    ["a1", "Meilleurs plans mis en favori pendant la journée"],
+    ["a2", "Rushs copiés sur le disque dur le soir même"],
+    ["a3", "Rushs copiés sur le cloud (deuxième copie)"],
+    ["a4", "Message de remerciement envoyé aux mariés"],
+    ["a5", "Montages livrés dans les délais"],
+    ["a6", "Avis demandé aux mariés"]
+  ];
+
+  const $ = id => document.getElementById(id);
+  const MONTHS = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
+  const DAYS = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
+  const today = () => { const d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); };
+  const fmtDate = d => { const x = new Date(d + "T12:00"); return DAYS[x.getDay()] + " " + x.getDate() + " " + MONTHS[x.getMonth()] + " " + x.getFullYear(); };
+  const daysUntil = d => Math.round((new Date(d + "T12:00") - new Date(today() + "T12:00")) / 864e5);
+  const allShotIds = r => [...SHOTS.flatMap(g => g.items.map(i => i[0])), ...(r.extras || []).map((_, i) => "x" + i)];
+  const progress = r => { const ids = allShotIds(r); const done = ids.filter(id => r.shots?.[id]).length; return [done, ids.length]; };
+  const el = (tag, props = {}, ...kids) => { const e = Object.assign(document.createElement(tag), props); e.append(...kids); return e; };
+
+  let col = null, rows = [], current = null, tab = "planning", canWrite = true, editing = null;
+
+  // ---------- Liste ----------
+  function renderList() {
+    const t = today();
+    const upcoming = rows.filter(r => r.date >= t).sort((a, b) => a.date.localeCompare(b.date));
+    const past = rows.filter(r => r.date < t).sort((a, b) => b.date.localeCompare(a.date));
+    const card = r => {
+      const [done, total] = progress(r);
+      const n = daysUntil(r.date);
+      const badge = n === 0 ? el("span", { className: "badge today", textContent: "C'est aujourd'hui" })
+        : n > 0 ? el("span", { className: "badge" + (n <= 7 ? " soon" : ""), textContent: "Dans " + n + " jour" + (n > 1 ? "s" : "") })
+        : el("span", { className: "badge past", textContent: "Terminé" });
+      const meta = el("div", { className: "meta" });
+      [fmtDate(r.date), r.lieux, r.creatrice && "Filmé par " + r.creatrice].filter(Boolean).forEach(x => meta.append(el("span", { textContent: x })));
+      const bar = el("div", { className: "bar", title: done + " plans sur " + total }, el("i", { style: "width:" + (total ? done / total * 100 : 0) + "%" }));
+      const b = el("button", { type: "button", className: "day-card" }, badge, el("strong", { textContent: r.couple }), meta, bar,
+        el("span", { className: "meta", textContent: done + " / " + total + " plans filmés" }));
+      b.addEventListener("click", () => openDay(r.id));
+      return b;
+    };
+    $("days").replaceChildren(...upcoming.map(card));
+    $("past-days").replaceChildren(...past.map(card));
+    $("past-wrap").hidden = !past.length;
+    $("past-sum").textContent = "Journées passées (" + past.length + ")";
+    $("list-status").hidden = rows.length > 0;
+    if (!rows.length) $("list-status").textContent = canWrite
+      ? "Aucune journée sur ce téléphone. Prépare un mariage avec « + Nouvelle journée », ou ouvre le lien reçu par WhatsApp."
+      : "Aucune journée préparée pour l'instant.";
+  }
+
+  // ---------- Une journée ----------
+  function openDay(id) { current = id; tab = "planning"; render(); window.scrollTo(0, 0); }
+  $("back").addEventListener("click", () => { current = null; render(); });
+  document.querySelectorAll(".tabs button").forEach(b => b.addEventListener("click", () => { tab = b.dataset.tab; renderDay(); }));
+
+  function toggle(field, key, on) {
+    if (!col || !canWrite) return;
+    col.doc(current).update({ [field]: { [key]: on } }).catch(() => {});
+  }
+  function checkRow(field, key, label, r) {
+    const on = !!r[field]?.[key];
+    const input = el("input", { type: "checkbox", checked: on, disabled: !canWrite });
+    input.addEventListener("change", () => toggle(field, key, input.checked));
+    return el("label", { className: "check" + (on ? " on" : "") }, input, el("span", { textContent: label }));
+  }
+
+  function renderDay() {
+    const r = rows.find(x => x.id === current);
+    if (!r) { current = null; render(); return; }
+    const n = daysUntil(r.date);
+    $("d-eyebrow").textContent = n === 0 ? "C'est aujourd'hui" : n > 0 ? "Dans " + n + " jour" + (n > 1 ? "s" : "") : "Mariage terminé";
+    $("d-title").textContent = r.couple;
+    const meta = $("d-meta"); meta.replaceChildren();
+    [fmtDate(r.date), r.formule, r.lieux, r.creatrice && "Filmé par " + r.creatrice].filter(Boolean).forEach(x => meta.append(el("span", { textContent: x })));
+    $("edit-day").hidden = false;
+    document.querySelectorAll(".tabs button").forEach(b => b.setAttribute("aria-selected", b.dataset.tab === tab));
+    const p = $("panel"); p.replaceChildren();
+
+    if (tab === "planning") {
+      const lines = (r.planning || "").split("\n").map(s => s.trim()).filter(Boolean).map(s => {
+        const m = s.match(/^(\d{1,2})[h:.](\d{2})?\s*[-–:]?\s*(.*)$/i);
+        return m ? { t: m[1].padStart(2, "0") + ":" + (m[2] || "00"), what: m[3] || "" } : { t: "", what: s };
+      });
+      if (!lines.length) { p.append(el("div", { className: "empty", textContent: "Pas encore de planning. Ajoute-le avec « Modifier la fiche »." })); return; }
+      const isToday = n === 0, now = new Date(), hm = String(now.getHours()).padStart(2, "0") + ":" + String(now.getMinutes()).padStart(2, "0");
+      let nowIdx = -1;
+      if (isToday) lines.forEach((l, i) => { if (l.t && l.t <= hm) nowIdx = i; });
+      p.append(el("ol", { className: "timeline" }, ...lines.map((l, i) =>
+        el("li", { className: isToday && i < nowIdx ? "done" : isToday && i === nowIdx ? "now" : "" }, el("time", { textContent: l.t || "—" }), el("span", { textContent: l.what })))));
+      if (r.surprises) p.append(el("div", { className: "info" }, el("h2", { textContent: "Surprises prévues" }), el("p", { textContent: r.surprises })));
+    }
+
+    if (tab === "plans") {
+      const [done, total] = progress(r);
+      p.append(el("p", { className: "muted", textContent: done + " plans filmés sur " + total + ". Coche au fur et à mesure." }));
+      SHOTS.forEach(g => {
+        const d = g.items.filter(i => r.shots?.[i[0]]).length;
+        p.append(el("section", { className: "group" }, el("h2", {}, g.label, el("span", { textContent: d + " / " + g.items.length })), ...g.items.map(([k, label]) => checkRow("shots", k, label, r))));
+      });
+      const extras = r.extras || [];
+      const grp = el("section", { className: "group" }, el("h2", {}, "Demandes des mariés", el("span", { textContent: extras.filter((_, i) => r.shots?.["x" + i]).length + " / " + extras.length })),
+        ...extras.map((label, i) => checkRow("shots", "x" + i, label, r)));
+      if (canWrite) {
+        const inp = el("input", { id: "x-new", placeholder: "Ajouter un plan demandé" });
+        const add = el("button", { type: "button", className: "ghost", textContent: "Ajouter" });
+        const go = () => { const v = inp.value.trim(); if (!v) return; col.doc(current).update({ extras: [...extras, v] }).catch(() => {}); inp.value = ""; };
+        add.addEventListener("click", go);
+        inp.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); go(); } });
+        grp.append(el("div", { className: "add-row" }, inp, add));
+      }
+      p.append(grp);
+    }
+
+    if (tab === "infos") {
+      const block = (title, text, alert) => el("div", { className: "info" + (alert ? " alert" : "") }, el("h2", { textContent: title }), el("p", { textContent: text || "Rien de noté.", className: text ? "" : "muted" }));
+      p.append(block("À ne pas filmer", r.eviter, !!r.eviter), block("Personnes importantes", r.vip), block("Surprises prévues", r.surprises), block("Contacts sur place", r.contacts), block("Style et notes", r.notes));
+    }
+
+    if (tab === "checks") {
+      p.append(el("section", { className: "group" }, el("h2", {}, "Avant de partir", el("span", { textContent: BEFORE.filter(i => r.prep?.[i[0]]).length + " / " + BEFORE.length })), ...BEFORE.map(([k, l]) => checkRow("prep", k, l, r))));
+      p.append(el("section", { className: "group" }, el("h2", {}, "Après le mariage", el("span", { textContent: AFTER.filter(i => r.prep?.[i[0]]).length + " / " + AFTER.length })), ...AFTER.map(([k, l]) => checkRow("prep", k, l, r))));
+    }
+  }
+
+  function render() {
+    $("list-view").hidden = !!current;
+    $("day-view").hidden = !current;
+    if (current) renderDay(); else renderList();
+  }
+
+  // ---------- Fiche ----------
+  const FIELDS = ["couple", "date", "creatrice", "formule", "lieux", "planning", "vip", "eviter", "surprises", "contacts", "notes"];
+  function openSheet(r) {
+    editing = r || null;
+    $("f-title").textContent = r ? "Modifier la fiche" : "Nouvelle journée";
+    FIELDS.forEach(f => { $("f-" + f).value = r?.[f] || ""; });
+    $("f-del").hidden = !r; $("f-del").dataset.armed = ""; $("f-del").textContent = "Supprimer la journée";
+    $("f-err").hidden = true;
+    $("sheet").showModal();
+  }
+  $("new-day").addEventListener("click", () => openSheet(null));
+  $("edit-day").addEventListener("click", () => openSheet(rows.find(x => x.id === current)));
+  $("f-cancel").addEventListener("click", () => $("sheet").close());
+  $("form").addEventListener("submit", async e => {
+    e.preventDefault();
+    if (!col || !canWrite) return;
+    const body = Object.fromEntries(FIELDS.map(f => [f, $("f-" + f).value.trim()]));
+    $("f-save").disabled = true;
+    try {
+      if (editing) await col.doc(editing.id).update(body);
+      else { const ref = await col.add({ ...body, shots: {}, prep: {}, extras: [], createdAt: Date.now() }); current = ref.id; tab = "planning"; }
+      $("sheet").close(); render();
+    } catch (err) {
+      $("f-err").hidden = false;
+      $("f-err").textContent = err?.code === "invalid_argument" ? "Tu n'as pas le droit de modifier ces journées." : "L'enregistrement n'a pas marché. Vérifie ta connexion et réessaie.";
+    } finally { $("f-save").disabled = false; }
+  });
+  $("f-del").addEventListener("click", async () => {
+    const b = $("f-del");
+    if (!b.dataset.armed) { b.dataset.armed = "1"; b.textContent = "Confirmer la suppression"; return; }
+    try { await col.doc(editing.id).delete(); $("sheet").close(); current = null; render(); }
+    catch { $("f-err").hidden = false; $("f-err").textContent = "La suppression n'a pas marché. Réessaie."; }
+  });
+
+  // ---------- Données : ce téléphone + liens de partage ----------
+  const KEY = "linstant-jourj-v1";
+  const load = () => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; } };
+  const save = all => { try { localStorage.setItem(KEY, JSON.stringify(all)); } catch {} };
+  const enc = o => btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+  const dec = s => JSON.parse(decodeURIComponent(escape(atob(s.replace(/-/g, "+").replace(/_/g, "/")))));
+  let store = load();
+  const sync = () => { rows = Object.values(store).filter(r => r.date); render(); };
+  col = {
+    doc: id => ({
+      update: async patch => {
+        const r = store[id]; if (!r) return;
+        for (const [k, v] of Object.entries(patch)) {
+          if (v && typeof v === "object" && !Array.isArray(v)) r[k] = { ...(r[k] || {}), ...v }; else r[k] = v;
+        }
+        save(store); sync();
+      },
+      delete: async () => { delete store[id]; save(store); sync(); }
+    }),
+    add: async body => { const id = "j" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); store[id] = { id, ...body }; save(store); sync(); return { id }; }
+  };
+
+  // Fiche reçue par lien : on garde les coches déjà faites sur ce téléphone
+  function importFromHash() {
+    const m = location.hash.match(/^#j=(.+)$/);
+    if (!m) return;
+    try {
+      const f = dec(m[1]);
+      if (!f.id || !f.date) return;
+      const old = store[f.id] || {};
+      store[f.id] = { ...f, shots: old.shots || {}, prep: old.prep || {}, extras: (old.extras && old.extras.length ? old.extras : f.extras) || [] };
+      save(store);
+      history.replaceState(null, "", location.pathname);
+      current = f.id; tab = "planning";
+    } catch {}
+  }
+  importFromHash();
+  window.addEventListener("hashchange", () => { importFromHash(); sync(); });
+
+  $("share-day").addEventListener("click", async () => {
+    const r = store[current]; if (!r) return;
+    const fiche = Object.fromEntries(["id", "createdAt", "extras", ...FIELDS].map(k => [k, r[k]]));
+    const url = location.origin + location.pathname + "#j=" + enc(fiche);
+    const text = "Jour J – " + r.couple + " (" + fmtDate(r.date) + ") : ouvre ce lien pour ta fiche et ta liste de plans";
+    const t = $("toast");
+    if (navigator.share) { try { await navigator.share({ title: "Jour J – " + r.couple, text, url }); return; } catch (e) { if (e && e.name === "AbortError") return; } }
+    try { await navigator.clipboard.writeText(text + " : " + url); t.textContent = "Lien copié. Colle-le dans WhatsApp pour l'envoyer."; }
+    catch { t.textContent = "Copie ce lien et envoie-le : " + url; }
+    t.hidden = false; setTimeout(() => { t.hidden = true; }, 8000);
+  });
+
+  sync();
+})();
+</script>
+</body>
+</html>
