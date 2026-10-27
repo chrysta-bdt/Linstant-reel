@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>L'instant réel · Créatrice de contenu mariage en Martinique et Guadeloupe</title>
+<meta name="description" content="Chrysta, créatrice de contenu mariage martiniquaise. Vos plus beaux moments filmés sur le vif, montés en réels et livrés sous 48 h. Martinique, Guadeloupe et partout dans le monde.">
+<meta property="og:title" content="L'instant réel · Créatrice de contenu mariage">
+<meta property="og:description" content="Vos plus beaux moments filmés sur le vif, montés en réels et livrés sous 48 h.">
+<meta property="og:image" content="posters/hero-photo.jpg">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#160f11">
+<style>
+:root { color-scheme: light; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+body { margin: 0; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Jost:wght@300;400;500;600&display=swap">
+<style>
+/* Layout: one scrolling page, full-bleed couple photo hero, then quiet blush sections; reviews drift past in a marquee. */
+:root {
+  /* Hero et contact : toujours sombres, quel que soit le thème */
+  --night: #160f11;
+  --ivory: #f8f2ee;
+  --ivory-soft: rgba(248, 242, 238, .74);
+  --rose: #ebbccb;
+  --bg: #f8eff2;
+  --surface: #fffafb;
+  --ink: #3b1f2c;
+  --muted: #7c5867;
+  --accent: #9e5a74;
+  --blush: #ecd3dc;
+  --line: rgba(59, 31, 44, .14);
+  --hero-a: #d79fb3;
+  --hero-b: #9a5872;
+  --on-hero: #ffffff;
+  --on-hero-soft: rgba(255, 255, 255, .78);
+  --chip: rgba(255, 255, 255, .22);
+  --btn-ink: #ffffff;
+  --display: "Bodoni Moda", "Didot", "Times New Roman", serif;
+  --body: "Jost", "Futura", "Avenir Next", system-ui, sans-serif;
+  --radius: 14px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1d1016; --surface: #28161f; --ink: #f7e8ee; --muted: #c9a4b3; --accent: #e3a7bc;
+    --blush: #43263a; --line: rgba(247, 232, 238, .14); --hero-a: #8c4f67; --hero-b: #43202f;
+    --on-hero: #fff6f9; --on-hero-soft: rgba(255, 246, 249, .75); --chip: rgba(255, 255, 255, .14);
+    --btn-ink: #2a1520; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1d1016; --surface: #28161f; --ink: #f7e8ee; --muted: #c9a4b3; --accent: #e3a7bc;
+  --blush: #43263a; --line: rgba(247, 232, 238, .14); --hero-a: #8c4f67; --hero-b: #43202f;
+  --on-hero: #fff6f9; --on-hero-soft: rgba(255, 246, 249, .75); --chip: rgba(255, 255, 255, .14);
+  --btn-ink: #2a1520; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--body); font-size: 17px; line-height: 1.6; font-weight: 400;
+  padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px));
+}
+@media (min-width: 900px) { body { padding-bottom: 0; } }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+.wrap {
+  max-width: 1120px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+section .wrap { padding-block: clamp(64px, 10vw, 112px); }
+
+.eyebrow {
+  font-size: 12px; letter-spacing: .22em; text-transform: uppercase; font-weight: 500; color: var(--muted);
+}
+h1, h2, h3 { font-family: var(--display); font-weight: 400; text-wrap: balance; margin: 0; line-height: 1.05; }
+h2 { font-size: clamp(36px, 6vw, 60px); }
+h2 em { font-style: italic; color: var(--accent); }
+.lede { max-width: 58ch; color: var(--muted); margin: 16px 0 0; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 10px; text-decoration: none;
+  font-weight: 500; font-size: 15px; letter-spacing: .04em;
+  padding: 15px 26px; border-radius: 999px; transition: transform .2s ease, background .2s ease;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn-solid { background: var(--ivory); color: var(--night); }
+.btn-ghost { border: 1px solid var(--ivory-soft); color: var(--ivory); }
+.btn-accent { background: var(--accent); color: var(--btn-ink); }
+
+/* ---------- Hero : la vidéo en plein cadre, comme un viseur ---------- */
+.hero { position: relative; isolation: isolate; overflow: hidden; background: var(--night); color: var(--ivory); }
+.hero-media { position: absolute; inset: 0; z-index: -1; }
+.hero-media img { display: block; width: 100%; height: 100%; max-width: none; object-fit: cover; object-position: 54% 30%; }
+.hero-media::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(22,15,17,.55) 0%, rgba(22,15,17,0) 14%, rgba(22,15,17,.15) 26%, rgba(22,15,17,.62) 40%, rgba(22,15,17,.88) 62%, var(--night) 100%);
+}
+.hero .wrap {
+  min-height: min(92svh, 860px); display: flex; flex-direction: column; justify-content: space-between; gap: 40px;
+  padding-block: 24px 48px;
+}
+@media (min-width: 900px) {
+  .hero-media { left: auto; width: 46%; }
+  .hero-media::after { background: linear-gradient(90deg, var(--night) 0%, rgba(22,15,17,.3) 35%, rgba(22,15,17,0) 65%), linear-gradient(0deg, rgba(22,15,17,.55), transparent 35%); }
+  .hero .wrap { min-height: min(88vh, 820px); }
+  .hero-copy { max-width: 56%; }
+}
+.topbar {
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  font-size: 12px; letter-spacing: .18em; text-transform: uppercase; font-variant-numeric: tabular-nums;
+}
+.topbar .mark { font-family: var(--display); letter-spacing: .02em; text-transform: none; font-size: 20px; }
+.viewfinder { display: inline-flex; align-items: center; gap: 14px; background: rgba(22,15,17,.45); padding: 7px 14px; border-radius: 999px; }
+.rec { display: inline-flex; align-items: center; gap: 6px; }
+.rec::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #ff4d6d; }
+@media (prefers-reduced-motion: no-preference) { .rec::before { animation: blink 1.2s steps(2) infinite; } @keyframes blink { 50% { opacity: .2; } } }
+.hero .eyebrow { color: var(--ivory); }
+.hero-copy { text-shadow: 0 1px 18px rgba(22,15,17,.45); }
+.hero h1 {
+  font-size: clamp(64px, 13vw, 148px); line-height: .92; letter-spacing: -.02em; margin-top: 14px;
+}
+.hero h1 span { display: block; }
+.hero h1 .it { font-style: italic; padding-left: .5em; color: var(--rose); }
+.hero .tag { font-size: clamp(18px, 2.2vw, 22px); font-weight: 300; max-width: 32ch; margin: 20px 0 28px; }
+.ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+.zones { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+.zones span, .zones a { background: rgba(248,242,238,.12); padding: 6px 14px; border-radius: 999px; font-size: 13px; letter-spacing: .06em; text-decoration: none; }
+.zones a:hover { background: rgba(248,242,238,.22); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero h1 span { animation: rise 1s cubic-bezier(.2,.7,.2,1) both; }
+  .hero h1 span + span { animation-delay: .12s; }
+  @keyframes rise { from { transform: translateY(.25em); } to { transform: none; } }
+}
+
+
+/* ---------- Réalisations ---------- */
+.head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 20px; }
+.head > div { min-width: 0; }
+.link-arrow { font-weight: 500; text-decoration: none; border-bottom: 1px solid var(--accent); padding-bottom: 2px; color: var(--accent); }
+.strip {
+  display: grid; grid-auto-flow: column; grid-auto-columns: min(220px, 62vw); gap: 16px;
+  overflow-x: auto; scroll-snap-type: x mandatory; padding: 36px 0 12px; scrollbar-width: thin;
+}
+.card-v {
+  scroll-snap-align: start; position: relative; aspect-ratio: 9 / 16; max-width: 100%; border-radius: var(--radius); overflow: hidden;
+  color: #fff; text-decoration: none; display: flex; flex-direction: column; justify-content: flex-end; padding: 16px;
+}
+.card-v { margin: 0; cursor: pointer; background-color: #2a1520; }
+.card-v::after, .card-v video { pointer-events: none; }
+.card-v.on .play { opacity: 0; }
+.card-v.film.playing::after, .card-v.film.playing > :not(video) { display: none; }
+.card-v.film.playing video { object-fit: contain; pointer-events: auto; background: #000; }
+.card-v video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.card-v::after { content: ""; position: absolute; inset: 0; background: linear-gradient(transparent 50%, rgba(40,10,25,.65)); }
+.card-v > * { position: relative; z-index: 1; }
+.card-v .play { position: absolute; top: 14px; right: 14px; width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,.25); display: grid; place-items: center; z-index: 1; }
+.card-v .play::before { content: ""; border-left: 11px solid #fff; border-top: 7px solid transparent; border-bottom: 7px solid transparent; margin-left: 3px; }
+.card-v strong { font-family: var(--display); font-weight: 400; font-style: italic; font-size: 24px; line-height: 1.1; }
+.card-v span { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; opacity: .85; }
+.g1 { background: linear-gradient(170deg, #e7b7c6, #8f4d67); }
+.g2 { background: linear-gradient(170deg, #f0d9c9, #b57a6d); }
+.g3 { background: linear-gradient(170deg, #c9a0bf, #5e3550); }
+.g4 { background: linear-gradient(170deg, #f3cdd5, #a8607a); }
+.g5 { background: linear-gradient(170deg, #d8b4a6, #7a4651); }
+.g6 { background: linear-gradient(170deg, #e2c2d6, #6f3f5d); }
+/* Onglets réalisations */
+.tabs { display: inline-flex; flex-wrap: wrap; gap: 6px; margin-top: 32px; padding: 5px; border-radius: 999px; background: var(--blush); max-width: 100%; }
+.tabs button { border: 0; background: transparent; color: var(--muted); font: 500 15px/1 var(--body); letter-spacing: .03em; padding: 12px 20px; border-radius: 999px; cursor: pointer; }
+.tabs button[aria-selected="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 2px 10px rgba(59,31,44,.12); }
+.panel-intro { display: grid; gap: 4px; margin-top: 28px; max-width: 60ch; }
+.panel-intro h3 { font-size: 28px; }
+.panel-intro h3 em { color: var(--accent); }
+.panel-intro p { margin: 0; color: var(--muted); }
+.panel .strip { padding-top: 24px; }
+.films { grid-auto-columns: min(300px, 78vw); }
+.card-v .dur { position: absolute; top: 16px; left: 16px; z-index: 1; background: rgba(0,0,0,.35); padding: 4px 10px; border-radius: 999px; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; opacity: 1; }
+.card-v .date { font-size: 13px; letter-spacing: .06em; text-transform: none; opacity: .9; }
+.todo { display: inline-block; margin-top: 8px; background: rgba(255,255,255,.25); padding: 3px 10px; border-radius: 999px; font-size: 11px; letter-spacing: .08em; }
+
+/* ---------- Collections ---------- */
+.prices { background: var(--surface); border-block: 1px solid var(--line); }
+.coll { display: grid; gap: 20px; margin-top: 44px; }
+@media (min-width: 860px) { .coll { grid-template-columns: repeat(3, 1fr); } }
+.c {
+  display: flex; flex-direction: column; gap: 18px; padding: 28px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); min-width: 0;
+}
+.c.star { background: linear-gradient(165deg, var(--hero-a), var(--hero-b)); color: var(--on-hero); border-color: transparent; }
+.c .eyebrow { color: inherit; opacity: .75; }
+.c h3 { font-size: 40px; }
+.price { font-family: var(--display); font-size: 18px; }
+.price b { font-size: 46px; font-weight: 400; }
+.hours { font-weight: 500; letter-spacing: .04em; padding-bottom: 14px; border-bottom: 1px solid currentColor; border-color: var(--line); }
+.c.star .hours { border-color: rgba(255,255,255,.35); }
+.c ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.c li { display: flex; gap: 10px; }
+.c li::before { content: "✦"; color: var(--accent); font-size: 12px; line-height: 2.2; }
+.c.star li::before { color: var(--on-hero); }
+.deliv { margin-top: auto; background: var(--blush); border-radius: 10px; padding: 12px 14px; font-size: 15px; }
+.c.star .deliv { background: var(--chip); }
+.deliv b { font-weight: 600; }
+.badge { align-self: flex-start; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; background: var(--chip); padding: 4px 10px; border-radius: 999px; }
+.note { margin-top: 24px; color: var(--muted); font-size: 15px; }
+
+/* ---------- Déroulé ---------- */
+.steps { list-style: none; padding: 0; margin: 44px 0 0; display: grid; gap: 28px; counter-reset: s; }
+@media (min-width: 760px) { .steps { grid-template-columns: repeat(4, 1fr); } }
+.steps li { counter-increment: s; border-top: 1px solid var(--line); padding-top: 18px; min-width: 0; }
+.steps li::before { content: counter(s, decimal-leading-zero); font-family: var(--display); font-style: italic; font-size: 30px; color: var(--accent); display: block; }
+.steps h3 { font-size: 24px; margin: 6px 0 8px; }
+.steps p { margin: 0; color: var(--muted); font-size: 15px; }
+
+/* ---------- Derrière la caméra ---------- */
+.about { background: var(--surface); border-top: 1px solid var(--line); }
+.about .wrap { display: grid; gap: 32px; align-items: center; }
+@media (min-width: 720px) { .about .wrap { grid-template-columns: 1.1fr .9fr; gap: 48px; } }
+.facts { display: flex; flex-wrap: wrap; gap: 28px; margin: 28px 0 0; }
+.facts div { min-width: 0; }
+.facts dt { font-family: var(--display); font-size: 44px; line-height: 1; color: var(--accent); font-variant-numeric: lining-nums; }
+.facts dd { margin: 6px 0 0; font-size: 14px; color: var(--muted); max-width: 18ch; }
+.about-photo { margin: 0; min-width: 0; }
+.about-photo img { display: block; width: 100%; height: auto; border-radius: var(--radius); }
+.about-text { min-width: 0; }
+.about-text p:not(.eyebrow) { color: var(--muted); max-width: 52ch; margin: 18px 0 0; }
+
+/* ---------- Avis ---------- */
+.reviews { background: var(--blush); overflow: hidden; }
+.reviews .wrap { padding-bottom: 32px; }
+.marquee { display: flex; gap: 18px; width: max-content; padding: 0 0 clamp(64px, 10vw, 112px); }
+@media (prefers-reduced-motion: no-preference) {
+  .marquee { animation: slide 50s linear infinite; }
+  .marquee:hover, .marquee.hold { animation-play-state: paused; }
+  @keyframes slide { to { transform: translateX(calc(-50% - 9px)); } }
+}
+@media (prefers-reduced-motion: reduce) { .marquee-box { overflow-x: auto; } }
+.r { width: min(330px, 80vw); background: var(--surface); border-radius: var(--radius); padding: 22px; display: flex; flex-direction: column; gap: 14px; }
+.r q { font-family: var(--display); font-size: 20px; line-height: 1.35; quotes: "« " " »"; }
+.r .who { font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); display: flex; justify-content: space-between; gap: 8px; }
+.ex { background: var(--blush); color: var(--muted); padding: 2px 8px; border-radius: 999px; font-size: 10px; letter-spacing: .1em; align-self: flex-start; }
+.audio { display: flex; align-items: center; gap: 14px; }
+.audio button { flex: none; width: 46px; height: 46px; border-radius: 50%; border: 0; background: var(--accent); color: var(--btn-ink); cursor: pointer; display: grid; place-items: center; }
+.audio button::before { content: ""; border-left: 12px solid currentColor; border-top: 8px solid transparent; border-bottom: 8px solid transparent; margin-left: 3px; }
+.audio.on button::before { border: 0; width: 12px; height: 14px; margin: 0; border-left: 4px solid currentColor; border-right: 4px solid currentColor; }
+.wave { display: flex; align-items: center; gap: 3px; height: 34px; flex: 1; min-width: 0; }
+.wave i { flex: 1; background: var(--accent); opacity: .55; border-radius: 2px; }
+@media (prefers-reduced-motion: no-preference) {
+  .audio.on .wave i { animation: eq .9s ease-in-out infinite alternate; }
+  @keyframes eq { to { transform: scaleY(.35); } }
+}
+
+/* ---------- FAQ ---------- */
+.faq { display: grid; gap: 12px; margin-top: 40px; max-width: 760px; }
+.faq details { border-bottom: 1px solid var(--line); padding: 4px 0 16px; }
+.faq summary { cursor: pointer; font-family: var(--display); font-size: 22px; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; font-family: var(--body); font-weight: 300; font-size: 26px; line-height: 1; color: var(--accent); transition: transform .2s; }
+.faq details[open] summary::after { transform: rotate(45deg); }
+.faq p { margin: 10px 0 0; color: var(--muted); max-width: 62ch; }
+
+/* ---------- Contact ---------- */
+.final { background: var(--night); color: var(--ivory); text-align: center; }
+.final h2 { font-size: clamp(42px, 8vw, 84px); }
+.final h2 em { color: var(--rose); }
+.final p { color: var(--ivory-soft); max-width: 46ch; margin: 18px auto 32px; }
+.final .ctas { justify-content: center; }
+footer .wrap { padding-block: 28px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 13px; color: var(--muted); }
+
+/* Sticky mobile booking bar */
+.sticky {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+  padding: 12px max(16px, env(safe-area-inset-right, 0px)) calc(12px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  background: var(--surface); border-top: 1px solid var(--line);
+}
+.sticky .btn { width: 100%; justify-content: center; }
+@media (min-width: 900px) { .sticky { display: none; } }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="hero-media" aria-hidden="true">
+    <img src="posters/hero-photo.jpg" alt="" width="2000" height="1333" fetchpriority="high">
+  </div>
+  <div class="wrap">
+    <div class="topbar">
+      <span class="mark">L'instant réel</span>
+    </div>
+    <div class="hero-copy">
+      <p class="eyebrow">Créatrice de contenu mariage</p>
+      <h1><span>L'instant</span><span class="it">réel</span></h1>
+      <p class="tag">Vos plus beaux moments filmés sur le vif, montés en réels et livrés sous 48&nbsp;h.</p>
+      <div class="ctas">
+        <a class="btn btn-solid" href="https://cal.com/chrysta-bidoyet-flouso/appel-decouverte" target="_blank" rel="noopener">Réserver mon appel découverte</a>
+        <a class="btn btn-ghost" href="#collections">Voir les collections</a>
+      </div>
+      <div class="zones"><span>Martinique</span><span>Guadeloupe</span><span>Partout dans le monde</span><a href="https://www.instagram.com/linstant.reel/" target="_blank" rel="noopener">@linstant.reel</a></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section id="realisations">
+    <div class="wrap">
+      <div class="head">
+        <div>
+          <p class="eyebrow">Réalisations</p>
+          <h2>Des mariages <em>vécus</em>, pas posés</h2>
+        </div>
+        <a class="link-arrow" href="https://www.instagram.com/linstant.reel/" target="_blank" rel="noopener">Tous mes réels sur Instagram →</a>
+      </div>
+      <div class="tabs" role="tablist" aria-label="Type de réalisations">
+        <button type="button" role="tab" id="tab-vif" aria-selected="true" aria-controls="panel-vif">Trends &amp; moments spontanés</button>
+        <button type="button" role="tab" id="tab-film" aria-selected="false" aria-controls="panel-film">Films récap</button>
+      </div>
+
+      <div class="panel" id="panel-vif" role="tabpanel" aria-labelledby="tab-vif">
+      <div class="panel-intro">
+        <h3>Trends et moments <em>spontanés</em></h3>
+        <p>Les trends du moment et les instants pris sur le vif : un rire, un regard, une transition. Des réels courts, prêts à poster.</p>
+      </div>
+      <div class="strip">
+        <div class="card-v clip" role="button" tabindex="0" aria-label="Lire la vidéo : les hommes d'honneur"><video src="videos/trend-hommes.mp4" poster="posters/trend-hommes.jpg" muted loop playsinline preload="metadata"></video><i class="play"></i><span>Trend</span><strong>Les hommes d'honneur</strong></div>
+        <div class="card-v clip" role="button" tabindex="0" aria-label="Lire la vidéo : avant, après, la mariée"><video src="videos/trend-mariee.mp4" poster="posters/trend-mariee.jpg" muted loop playsinline preload="metadata"></video><i class="play"></i><span>Trend</span><strong>Avant, après : la mariée</strong></div>
+        <div class="card-v clip" role="button" tabindex="0" aria-label="Lire la vidéo : le marié et sa team"><video src="videos/trend-marie.mp4" poster="posters/trend-marie.jpg" muted loop playsinline preload="metadata"></video><i class="play"></i><span>Trend</span><strong>Le marié et sa team</strong></div>
+        <div class="card-v clip" role="button" tabindex="0" aria-label="Lire la vidéo : je reste avec mon mari"><video src="videos/trend-mari.mp4" poster="posters/trend-mari.jpg" muted loop playsinline preload="metadata"></video><i class="play"></i><span>Trend</span><strong>« Je reste avec mon mari »</strong></div>
+        <div class="card-v clip" role="button" tabindex="0" aria-label="Lire la vidéo : la mariée et ses demoiselles"><video src="videos/spontane-demoiselles.mp4" poster="posters/spontane-demoiselles.jpg" muted loop playsinline preload="metadata"></video><i class="play"></i><span>Spontané</span><strong>La mariée et ses demoiselles</strong></div>
+      </div>
+      </div>
+
+      <div class="panel" id="panel-film" role="tabpanel" aria-labelledby="tab-film" hidden>
+      <div class="panel-intro">
+        <h3>Le <em>film</em> de votre journée</h3>
+        <p>Toute votre journée racontée dans un montage récap, des préparatifs à la soirée. Le souvenir à revoir encore et encore.</p>
+      </div>
+      <div class="strip films">
+        <div class="card-v film" role="button" tabindex="0" aria-label="Lire le film de Nicole et Nathan : unis pour la vie"><video src="videos/film-2.mp4" poster="posters/film-2.jpg" playsinline preload="none"></video><span class="dur">0:53</span><i class="play"></i><span>Unis pour la vie</span><strong>Nicole &amp; Nathan</strong><span class="date">Guadeloupe</span></div>
+        <div class="card-v film" role="button" tabindex="0" aria-label="Lire le film de Kelia et Jose : la cérémonie au jardin"><video src="videos/hero.mp4" poster="posters/film-7.jpg" playsinline preload="none"></video><span class="dur">0:39</span><i class="play"></i><span>La cérémonie au jardin</span><strong>Kelia &amp; Jose</strong></div>
+        <div class="card-v film" role="button" tabindex="0" aria-label="Lire le film de Giovanna et Maxime : toute la journée"><video src="videos/film-5.mp4" poster="posters/film-5.jpg" playsinline preload="none"></video><span class="dur">3:33</span><i class="play"></i><span>Toute la journée</span><strong>Giovanna &amp; Maxime</strong><span class="date">Martinique · juillet 2026</span></div>
+        <div class="card-v film" role="button" tabindex="0" aria-label="Lire le film de Maud et Ruben : le mariage civil"><video src="videos/film-3.mp4" poster="posters/film-3.jpg" playsinline preload="none"></video><span class="dur">2:00</span><i class="play"></i><span>Le mariage civil</span><strong>Maud &amp; Ruben</strong><span class="date">Martinique · août 2026</span></div>
+        <div class="card-v film" role="button" tabindex="0" aria-label="Lire le film de Brice et Audrey : cérémonie et réception"><video src="videos/film-1.mp4" poster="posters/film-1.jpg" playsinline preload="none"></video><span class="dur">1:04</span><i class="play"></i><span>Cérémonie et réception</span><strong>Brice &amp; Audrey</strong><span class="date">octobre 2025</span></div>
+        <div class="card-v film" role="button" tabindex="0" aria-label="Lire le film de Djeremy et Kathleen : le oui à la mairie"><video src="videos/film-4.mp4" poster="posters/film-4.jpg" playsinline preload="none"></video><span class="dur">1:09</span><i class="play"></i><span>Le oui à la mairie</span><strong>Djeremy &amp; Kathleen</strong><span class="date">Martinique · octobre 2026</span></div>
+        <div class="card-v film" role="button" tabindex="0" aria-label="Lire le film de Gabrielle et Didier : de la cérémonie à la fête"><video src="videos/film-6.mp4" poster="posters/film-6.jpg" playsinline preload="none"></video><span class="dur">1:02</span><i class="play"></i><span>De la cérémonie à la fête</span><strong>Gabrielle &amp; Didier</strong><span class="date">Martinique</span></div>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="prices" id="collections">
+    <div class="wrap">
+      <p class="eyebrow">Tarifs 2026 / 2027</p>
+      <h2>Trois <em>collections</em></h2>
+      <p class="lede">Chaque collection comprend des montages verticaux au choix, prêts à poster sur Instagram et TikTok, livrés sous 48&nbsp;heures maximum.</p>
+      <div class="coll">
+        <article class="c">
+          <p class="eyebrow">Collection</p>
+          <h3>Intime</h3>
+          <p class="price">à partir de <b>250&nbsp;€</b></p>
+          <p class="hours">4&nbsp;h de présence</p>
+          <ul><li>Préparatifs</li><li>Cérémonie</li><li>Shooting couple</li></ul>
+          <p class="deliv"><b>2 montages</b> au choix (Reels / TikTok), livrés sous 48&nbsp;h</p>
+        </article>
+        <article class="c star">
+          <span class="badge">La plus choisie</span>
+          <p class="eyebrow">Collection</p>
+          <h3>Signature</h3>
+          <p class="price">à partir de <b>400&nbsp;€</b></p>
+          <p class="hours">8&nbsp;h de présence</p>
+          <ul><li>Préparatifs</li><li>Cérémonie religieuse ou laïque</li><li>Shooting vidéo couple</li><li>Réception</li></ul>
+          <p class="deliv"><b>3 montages</b> au choix (Reels / TikTok), livrés sous 48&nbsp;h</p>
+        </article>
+        <article class="c">
+          <p class="eyebrow">Collection</p>
+          <h3>Éternité</h3>
+          <p class="price">à partir de <b>600&nbsp;€</b></p>
+          <p class="hours">12&nbsp;h de présence</p>
+          <ul><li>Préparatifs</li><li>Cérémonie civile (captation) et cérémonie religieuse</li><li>Shooting vidéo couple</li><li>Réception</li><li>Lancer de bouquet</li></ul>
+          <p class="deliv"><b>4 montages</b> au choix (Reels / TikTok), livrés sous 48&nbsp;h</p>
+        </article>
+      </div>
+      <p class="note">Hors frais de déplacement pour la Guadeloupe et l'international. Le devis exact se fait après l'appel découverte.</p>
+    </div>
+  </section>
+
+  <section id="deroule">
+    <div class="wrap">
+      <p class="eyebrow">Comment ça se passe</p>
+      <h2>De l'appel au <em>premier réel</em></h2>
+      <ol class="steps">
+        <li><h3>Appel découverte</h3><p>20 minutes pour parler de votre mariage et des moments qui comptent pour vous.</p></li>
+        <li><h3>Devis et acompte</h3><p>Vous recevez votre devis. La date est bloquée dès la signature et l'acompte.</p></li>
+        <li><h3>Le jour J</h3><p>Je filme discrètement, au cœur de l'action, pendant que vous profitez.</p></li>
+        <li><h3>Livraison sous 48&nbsp;h</h3><p>Vos montages arrivent pendant que l'émotion est encore là, prêts à partager.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="about" id="moi">
+    <div class="wrap">
+      <figure class="about-photo">
+        <img src="posters/moi.jpg" alt="Chrysta, en polo L'instant réel, entre les mariés au bord de la piscine" width="1103" height="666" loading="lazy">
+      </figure>
+      <div class="about-text">
+        <p class="eyebrow">Derrière la caméra</p>
+        <h2>Moi, c'est <em>Chrysta</em></h2>
+        <p>Martiniquaise, créatrice de contenu mariage. En 2026, j'ai déjà accompagné plus de 15 couples de mariés, en Martinique, en Guadeloupe et partout où l'amour m'emmène.</p>
+        <p>Le jour J, je me fonds parmi vos invités pour capter ce qui se passe vraiment : les regards, les rires, les larmes et les petits détails que vous n'aurez pas le temps de voir. Et sous 48&nbsp;h, vous revivez tout.</p>
+        <dl class="facts">
+          <div><dt>15+</dt><dd>couples accompagnés en 2026</dd></div>
+          <div><dt>48&nbsp;h</dt><dd>pour recevoir vos montages</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="reviews" id="avis">
+    <div class="wrap">
+      <p class="eyebrow">Ils m'ont fait confiance</p>
+      <h2>La parole aux <em>mariés</em></h2>
+    </div>
+    <div class="marquee-box"><div class="marquee" id="marquee"></div></div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <p class="eyebrow">Questions fréquentes</p>
+      <h2>Avant de <em>réserver</em></h2>
+      <div class="faq">
+        <details><summary>Quelle différence avec un vidéaste ?</summary><p>Un vidéaste livre un film plusieurs semaines après le mariage. Je filme au téléphone, au plus près de vous et de vos invités, pour des contenus verticaux et spontanés que vous pouvez publier dès le lendemain. Les deux se complètent très bien.</p></details>
+        <details><summary>Quand est-ce que je reçois mes vidéos ?</summary><p>Vos montages sont livrés sous 48&nbsp;heures maximum après le mariage.</p></details>
+        <details><summary>Vous vous déplacez ?</summary><p>Oui : en Martinique, en Guadeloupe et partout dans le monde. Les frais de déplacement sont précisés dans le devis.</p></details>
+        <details><summary>Comment réserver ma date ?</summary><p>Réservez un appel découverte. Après l'appel, vous recevez un devis, et votre date est bloquée dès la signature et le versement de l'acompte.</p></details>
+        <details><summary>Je peux choisir les moments filmés ?</summary><p>Bien sûr. On en parle pendant l'appel découverte pour que rien d'important ne soit oublié.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="final" id="contact">
+    <div class="wrap">
+      <h2>Votre histoire, <em>en vrai</em></h2>
+      <p>Les dates partent vite. Réservez votre appel découverte et parlons de votre jour J.</p>
+      <div class="ctas">
+        <a class="btn btn-solid" href="https://cal.com/chrysta-bidoyet-flouso/appel-decouverte" target="_blank" rel="noopener">Réserver mon appel découverte</a>
+        <a class="btn btn-ghost" href="https://www.instagram.com/linstant.reel/" target="_blank" rel="noopener">M'écrire sur Instagram</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap"><span>© 2026 L'instant réel · Créatrice de contenu mariage</span><span>Martinique · Guadeloupe · Monde</span></div></footer>
+
+<div class="sticky"><a class="btn btn-accent" href="https://cal.com/chrysta-bidoyet-flouso/appel-decouverte" target="_blank" rel="noopener">Réserver mon appel découverte</a></div>
+
+<script>
+(() => {
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Vidéos : les trends se lancent seules (sans le son) quand elles sont à l'écran, les films au toucher avec le son
+  if (!reduce && "IntersectionObserver" in window) {
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      const v = e.target;
+      if (e.isIntersecting) { v.play().catch(() => {}); v.parentElement.classList.add("on"); }
+      else { v.pause(); v.parentElement.classList.remove("on"); }
+    }), { threshold: .6 });
+    document.querySelectorAll(".clip video").forEach(v => io.observe(v));
+  }
+  document.querySelectorAll(".card-v").forEach(card => {
+    const v = card.querySelector("video");
+    const toggle = () => {
+      if (card.classList.contains("film")) {
+        if (card.classList.contains("playing")) return;
+        document.querySelectorAll(".film.playing").forEach(c => { c.classList.remove("playing"); const o = c.querySelector("video"); o.pause(); o.controls = false; });
+        card.classList.add("playing"); v.controls = true; v.play().catch(() => {});
+      } else if (v.paused) { v.play().catch(() => {}); card.classList.add("on"); }
+      else { v.pause(); card.classList.remove("on"); }
+    };
+    card.addEventListener("click", toggle);
+    card.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); } });
+  });
+
+  // Onglets réalisations
+  const tabs = [...document.querySelectorAll('[role="tab"]')];
+  tabs.forEach(t => t.addEventListener("click", () => {
+    tabs.forEach(o => {
+      const on = o === t;
+      o.setAttribute("aria-selected", on);
+      const p = document.getElementById(o.getAttribute("aria-controls"));
+      p.hidden = !on;
+      if (!on) p.querySelectorAll("video").forEach(v => v.pause());
+    });
+  }));
+
+  // Avis : remplacer ces exemples par les vrais avis des mariés (type "texte" ou "audio")
+  const AVIS = [
+    { type: "texte", vrai: true, qui: "Maureen & Jean-Daniel", lieu: "Martinique",
+      texte: "Je n'ai que du positif à dire concernant ton travail et surtout concernant la personne que tu es. Du début à la fin, tu as su être à l'écoute, bienveillante et attentionnée." },
+    { type: "audio", vrai: true, src: "audio/avis-maud-ruben.mp3", duree: "0:25", qui: "Maud & Ruben", lieu: "Martinique",
+      texte: "Elle a géré de fou et le rendu est vraiment top. Je suis hyper satisfaite… L'attention sur les petits détails, je ne m'y attendais pas." },
+    { type: "texte", vrai: true, qui: "Perle & Benjamin", lieu: "Martinique",
+      texte: "Nous avons adoré les vidéos et le fait que tu nous envoies aussi tous les rushs. On était tellement émus lors du visionnage. On a tout reçu le jour du mariage, c'était merveilleux." },
+    { type: "audio", vrai: true, src: "audio/avis-video.mp3", duree: "0:33", qui: "Grâce & Abram", lieu: "Martinique",
+      texte: "Grâce à toi, on peut admirer notre mariage… Merci d'avoir capturé les moments émouvants. La vidéo est magnifique." },
+    { type: "texte", vrai: true, qui: "Edwina", lieu: "Guadeloupe",
+      texte: "On a tous aimé ton travail, à un point où c'est difficile de faire mieux. Ta présence fait naturellement du bien, tu gères bien l'équilibre entre proximité et professionnalisme." },
+    { type: "texte", vrai: true, qui: "Aurélie & Guynel", lieu: "",
+      texte: "On a vraiment fait le meilleur choix en te prenant comme créatrice de contenu pour notre mariage. Merci d'avoir capturé tous ces souvenirs avec autant de talent, ça nous permet de revivre cette journée encore et encore." },
+    { type: "texte", vrai: true, qui: "Gabrielle & Didier", lieu: "Martinique",
+      texte: "Tu as été adorable du début à la fin, en plus de ton professionnalisme… C'était super agréable de t'avoir avec nous pour l'un des plus beaux jours de notre vie." }
+  ];
+  const m = document.getElementById("marquee");
+  const card = a => {
+    const el = document.createElement("article");
+    el.className = "r";
+    const head = a.vrai ? "" : `<span class="ex">Exemple à remplacer</span>`;
+    const who = `<p class="who"><span>${a.qui}</span><span>${a.lieu}</span></p>`;
+    if (a.type === "audio") {
+      const bars = Array.from({ length: 28 }, (_, k) => `<i style="height:${20 + Math.round(Math.abs(Math.sin(k * 1.7)) * 80)}%"></i>`).join("");
+      el.innerHTML = `${head}<div class="audio"><button type="button" aria-label="Écouter le message vocal"></button><div class="wave">${bars}</div><span>${a.duree}</span></div>${a.texte ? `<q>${a.texte}</q>` : ""}${who}`;
+      const box = el.querySelector(".audio"), btn = el.querySelector("button");
+      if (!a.src) { btn.addEventListener("click", () => box.classList.toggle("on")); return el; }
+      // Vrai message vocal : un seul à la fois, et le défilé s'arrête pendant l'écoute
+      const snd = new Audio(a.src); snd.preload = "none";
+      const stop = () => { box.classList.remove("on"); btn.setAttribute("aria-label", "Écouter le message vocal"); m.classList.remove("hold"); };
+      snd.addEventListener("ended", stop); snd.addEventListener("pause", stop);
+      btn.addEventListener("click", () => {
+        if (!snd.paused) { snd.pause(); return; }
+        if (window.__avisEnCours && window.__avisEnCours !== snd) window.__avisEnCours.pause();
+        window.__avisEnCours = snd;
+        snd.play().then(() => { box.classList.add("on"); btn.setAttribute("aria-label", "Mettre en pause"); m.classList.add("hold"); }).catch(() => {});
+      });
+    } else {
+      el.innerHTML = `${head}<q>${a.texte}</q>${who}`;
+    }
+    return el;
+  };
+  [...AVIS, ...AVIS].forEach(a => m.appendChild(card(a)));
+})();
+</script>
+
+</body>
+</html>
