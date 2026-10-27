@@ -75,7 +75,7 @@ a { color: inherit; }
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
 }
-section .wrap { padding-block: clamp(64px, 10vw, 112px); }
+section .wrap { padding-block: clamp(44px, 7vw, 88px); }
 
 .eyebrow {
   font-size: 12px; letter-spacing: .22em; text-transform: uppercase; font-weight: 500; color: var(--muted);
@@ -190,6 +190,8 @@ h2 em { font-style: italic; color: var(--accent); }
 .prices { background: var(--surface); border-block: 1px solid var(--line); }
 .coll { display: grid; gap: 20px; margin-top: 44px; }
 @media (min-width: 860px) { .coll { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 859px) { .coll { grid-auto-flow: column; grid-auto-columns: 86%; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 8px; } .c { scroll-snap-align: start; } }
+@media (min-width: 860px) { .swipe-hint { display: none; } }
 .c {
   display: flex; flex-direction: column; gap: 18px; padding: 28px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); min-width: 0;
 }
@@ -237,7 +239,7 @@ h2 em { font-style: italic; color: var(--accent); }
 /* ---------- Avis ---------- */
 .reviews { background: var(--blush); overflow: hidden; }
 .reviews .wrap { padding-bottom: 32px; }
-.marquee { display: flex; gap: 18px; width: max-content; padding: 0 0 clamp(64px, 10vw, 112px); }
+.marquee { display: flex; gap: 18px; width: max-content; padding: 0 0 clamp(44px, 7vw, 88px); }
 @media (prefers-reduced-motion: no-preference) {
   .marquee { animation: slide 50s linear infinite; }
   .marquee:hover, .marquee.hold { animation-play-state: paused; }
@@ -274,6 +276,7 @@ h2 em { font-style: italic; color: var(--accent); }
 .final h2 em { color: var(--rose); }
 .final p { color: var(--ivory-soft); max-width: 46ch; margin: 18px auto 32px; }
 .final .ctas { justify-content: center; }
+footer a { color: var(--accent); }
 footer .wrap { padding-block: 28px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 13px; color: var(--muted); }
 
 /* Sticky mobile booking bar */
@@ -324,10 +327,6 @@ footer .wrap { padding-block: 28px; display: flex; flex-wrap: wrap; justify-cont
       </div>
 
       <div class="panel" id="panel-vif" role="tabpanel" aria-labelledby="tab-vif">
-      <div class="panel-intro">
-        <h3>Trends et moments <em>spontanés</em></h3>
-        <p>Les trends du moment et les instants pris sur le vif : un rire, un regard, une transition. Des réels courts, prêts à poster.</p>
-      </div>
       <div class="strip">
         <div class="card-v clip" role="button" tabindex="0" aria-label="Lire la vidéo : les hommes d'honneur"><video src="videos/trend-hommes.mp4" poster="posters/trend-hommes.jpg" muted loop playsinline preload="metadata"></video><i class="play"></i><span>Trend</span><strong>Les hommes d'honneur</strong></div>
         <div class="card-v clip" role="button" tabindex="0" aria-label="Lire la vidéo : avant, après, la mariée"><video src="videos/trend-mariee.mp4" poster="posters/trend-mariee.jpg" muted loop playsinline preload="metadata"></video><i class="play"></i><span>Trend</span><strong>Avant, après : la mariée</strong></div>
@@ -338,10 +337,6 @@ footer .wrap { padding-block: 28px; display: flex; flex-wrap: wrap; justify-cont
       </div>
 
       <div class="panel" id="panel-film" role="tabpanel" aria-labelledby="tab-film" hidden>
-      <div class="panel-intro">
-        <h3>Le <em>film</em> de votre journée</h3>
-        <p>Toute votre journée racontée dans un montage récap, des préparatifs à la soirée. Le souvenir à revoir encore et encore.</p>
-      </div>
       <div class="strip films">
         <div class="card-v film" role="button" tabindex="0" aria-label="Lire le film de Nicole et Nathan : unis pour la vie"><video src="videos/film-2.mp4" poster="posters/film-2.jpg" playsinline preload="none"></video><span class="dur">0:53</span><i class="play"></i><span>Unis pour la vie</span><strong>Nicole &amp; Nathan</strong><span class="date">Guadeloupe</span></div>
         <div class="card-v film" role="button" tabindex="0" aria-label="Lire le film de Kelia et Jose : la cérémonie au jardin"><video src="videos/hero.mp4" poster="posters/film-7.jpg" playsinline preload="none"></video><span class="dur">0:39</span><i class="play"></i><span>La cérémonie au jardin</span><strong>Kelia &amp; Jose</strong></div>
@@ -359,7 +354,7 @@ footer .wrap { padding-block: 28px; display: flex; flex-wrap: wrap; justify-cont
     <div class="wrap">
       <p class="eyebrow">Tarifs 2027 · 60&nbsp;€ de l'heure</p>
       <h2>Trois <em>collections</em></h2>
-      <p class="lede">Un tarif simple : 60&nbsp;€ par heure de présence. Chaque collection comprend des montages verticaux au choix, prêts à poster sur Instagram et TikTok, livrés sous 48&nbsp;heures maximum. Choisissez celle qui vous ressemble et réservez votre appel découverte : on en parle ensemble.</p>
+      <p class="lede">60&nbsp;€ de l'heure. Des montages verticaux prêts à poster, livrés sous 48&nbsp;h. <span class="swipe-hint">Faites glisser pour voir les 3 formules.</span></p>
       <div class="coll">
         <article class="c">
           <p class="eyebrow">Collection</p>
@@ -390,20 +385,7 @@ footer .wrap { padding-block: 28px; display: flex; flex-wrap: wrap; justify-cont
           <a class="pick" href="https://cal.com/l-instant.reel/appel-decouverte?formule=%C3%89ternit%C3%A9" target="_blank" rel="noopener">Je suis intéressé(e) par cette formule</a>
         </article>
       </div>
-      <p class="note">Heure supplémentaire : 60&nbsp;€. Hors frais de déplacement pour la Guadeloupe et l'international. Le devis exact se fait après l'appel découverte.</p>
-    </div>
-  </section>
-
-  <section id="deroule">
-    <div class="wrap">
-      <p class="eyebrow">Comment ça se passe</p>
-      <h2>De l'appel au <em>premier réel</em></h2>
-      <ol class="steps">
-        <li><h3>Appel découverte</h3><p>20 minutes pour parler de votre mariage et des moments qui comptent pour vous.</p></li>
-        <li><h3>Devis et acompte</h3><p>Vous recevez votre devis. La date est bloquée dès la signature et l'acompte.</p></li>
-        <li><h3>Le jour J</h3><p>Je filme discrètement, au cœur de l'action, pendant que vous profitez.</p></li>
-        <li><h3>Livraison sous 48&nbsp;h</h3><p>Vos montages arrivent pendant que l'émotion est encore là, prêts à partager.</p></li>
-      </ol>
+      <p class="note"><b>Comment ça se passe :</b> appel découverte → devis et acompte → jour J → vos vidéos sous 48&nbsp;h. Heure supplémentaire : 60&nbsp;€. Déplacements hors Martinique en plus.</p>
     </div>
   </section>
 
@@ -415,12 +397,7 @@ footer .wrap { padding-block: 28px; display: flex; flex-wrap: wrap; justify-cont
       <div class="about-text">
         <p class="eyebrow">Derrière la caméra</p>
         <h2>Moi, c'est <em>Chrysta</em></h2>
-        <p>Martiniquaise, créatrice de contenu mariage. En 2026, j'ai déjà accompagné plus de 15 couples de mariés, en Martinique, en Guadeloupe et partout où l'amour m'emmène.</p>
-        <p>Le jour J, je me fonds parmi vos invités pour capter ce qui se passe vraiment : les regards, les rires, les larmes et les petits détails que vous n'aurez pas le temps de voir. Et sous 48&nbsp;h, vous revivez tout.</p>
-        <dl class="facts">
-          <div><dt>15+</dt><dd>couples accompagnés en 2026</dd></div>
-          <div><dt>48&nbsp;h</dt><dd>pour recevoir vos montages</dd></div>
-        </dl>
+        <p>Martiniquaise, créatrice de contenu mariage. Plus de 15 couples accompagnés en 2026, en Martinique, en Guadeloupe et partout où l'amour m'emmène.</p>
       </div>
     </div>
   </section>
@@ -439,27 +416,15 @@ footer .wrap { padding-block: 28px; display: flex; flex-wrap: wrap; justify-cont
       <h2>Avant de <em>réserver</em></h2>
       <div class="faq">
         <details><summary>Quelle différence avec un vidéaste ?</summary><p>Un vidéaste livre un film plusieurs semaines après le mariage. Je filme au téléphone, au plus près de vous et de vos invités, pour des contenus verticaux et spontanés que vous pouvez publier dès le lendemain. Les deux se complètent très bien.</p></details>
-        <details><summary>Quand est-ce que je reçois mes vidéos ?</summary><p>Vos montages sont livrés sous 48&nbsp;heures maximum après le mariage.</p></details>
         <details><summary>Vous vous déplacez ?</summary><p>Oui : en Martinique, en Guadeloupe et partout dans le monde. Les frais de déplacement sont précisés dans le devis.</p></details>
         <details><summary>Comment réserver ma date ?</summary><p>Réservez un appel découverte. Après l'appel, vous recevez un devis, et votre date est bloquée dès la signature et le versement de l'acompte.</p></details>
-        <details><summary>Je peux choisir les moments filmés ?</summary><p>Bien sûr. On en parle pendant l'appel découverte pour que rien d'important ne soit oublié.</p></details>
       </div>
     </div>
   </section>
 
-  <section class="final" id="contact">
-    <div class="wrap">
-      <h2>Votre histoire, <em>en vrai</em></h2>
-      <p>Les dates partent vite. Réservez votre appel découverte et parlons de votre jour J.</p>
-      <div class="ctas">
-        <a class="btn btn-solid" href="https://cal.com/l-instant.reel/appel-decouverte" target="_blank" rel="noopener">Réserver mon appel découverte</a>
-        <a class="btn btn-ghost" href="https://www.instagram.com/linstant.reel/" target="_blank" rel="noopener">M'écrire sur Instagram</a>
-      </div>
-    </div>
-  </section>
 </main>
 
-<footer><div class="wrap"><span>© 2026 L'instant réel · Créatrice de contenu mariage</span><span>Martinique · Guadeloupe · Monde</span></div></footer>
+<footer><div class="wrap"><span>© 2026 L'instant réel · Créatrice de contenu mariage · Martinique · Guadeloupe · Monde</span><span><a href="https://www.instagram.com/linstant.reel/" target="_blank" rel="noopener">Instagram @linstant.reel</a> · <a href="https://cal.com/l-instant.reel/appel-decouverte" target="_blank" rel="noopener">Réserver un appel</a></span></div></footer>
 
 <div class="sticky"><a class="btn btn-accent" href="https://cal.com/l-instant.reel/appel-decouverte" target="_blank" rel="noopener">Réserver mon appel découverte</a></div>
 
