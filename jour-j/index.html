@@ -116,6 +116,13 @@ textarea { min-height: 90px; resize: vertical; }
 .actions div { display: flex; gap: 10px; }
 .del { background: transparent; border: 0; color: var(--warn); padding: 10px 0; }
 .err { color: var(--warn); font-size: 13px; margin: 0; }
+.who { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 18px; }
+.who-label { font-size: 13px; color: var(--muted); }
+.chip-btn { border: 1px solid var(--line); background: var(--surface); padding: 8px 14px; border-radius: 999px; font-weight: 500; }
+.chip-btn[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--btn-ink); }
+.skip { flex: none; white-space: nowrap; border: 1px solid var(--line); background: transparent; border-radius: 999px; padding: 2px 10px; font-size: 12px; letter-spacing: 0; text-transform: none; color: var(--muted); font-variant-numeric: tabular-nums; }
+.skip.is-off { border-style: dashed; }
+.group.skipped { opacity: .6; padding-bottom: 6px; }
 .head-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 .toast { margin: 4px 0 0; font-size: 14px; color: var(--ok); }
 .share-box { display: grid; gap: 8px; }
@@ -134,6 +141,7 @@ textarea { min-height: 90px; resize: vertical; }
       </div>
       <button class="primary" id="new-day" type="button">+ Nouvelle journée</button>
     </header>
+    <div class="who" id="who" hidden></div>
     <div id="list-status" class="empty">Chargement des journées…</div>
     <div class="days" id="days"></div>
     <details class="past-days" id="past-wrap" hidden><summary id="past-sum">Journées passées</summary><div class="days" id="past-days"></div></details>
@@ -189,41 +197,106 @@ textarea { min-height: 90px; resize: vertical; }
 <script>
 (() => {
   // Liste des plans de L'instant réel, par moment de la journée
+  // Les moments importants d'un mariage, dans l'ordre de la journée, avec les plans à ne pas rater
   const SHOTS = [
-    { id: "prep", label: "Préparatifs", items: [
-      ["p1", "Détails : robe sur cintre, chaussures, bijoux, parfum, faire-part"],
-      ["p2", "Maquillage et coiffure en gros plan"],
-      ["p3", "La mariée qui enfile sa robe (dos, boutons, voile)"],
-      ["p4", "Première réaction de la mariée devant le miroir"],
-      ["p5", "Réaction du papa ou de la maman en la découvrant"],
-      ["p6", "Le marié qui s'habille : boutons de manchette, nœud, montre"],
-      ["p7", "Les témoins et la famille, ambiance et rires"]
+    { id: "prepf", label: "Préparatifs de la mariée", items: [
+      ["prepf1", "Détails : robe sur cintre, chaussures, bijoux, parfum, bouquet, faire-part"],
+      ["prepf2", "Maquillage et coiffure en gros plan"],
+      ["prepf3", "Habillage : dos de la robe, boutons, voile"],
+      ["prepf4", "Première réaction de la mariée devant le miroir"],
+      ["prepf5", "Réaction du papa, de la maman ou des témoins en la découvrant"],
+      ["prepf6", "Lettre ou cadeau du marié"],
+      ["prepf7", "Départ de la maison"]
     ]},
-    { id: "cer", label: "Cérémonie", items: [
-      ["c1", "Plan large du lieu et de la décoration"],
-      ["c2", "Le marié qui attend, sa réaction à l'arrivée de la mariée"],
-      ["c3", "Entrée de la mariée"],
-      ["c4", "Échange des alliances en gros plan (mains)"],
-      ["c5", "Le oui et le premier baiser"],
-      ["c6", "Réactions des parents et des invités (larmes, sourires)"],
-      ["c7", "Sortie des mariés : riz, pétales, applaudissements"]
+    { id: "preph", label: "Préparatifs du marié", items: [
+      ["preph1", "Détails : boutonnière, montre, chaussures, alliances"],
+      ["preph2", "Habillage : boutons de manchette, nœud, veste"],
+      ["preph3", "Témoins et famille : ambiance et rires"],
+      ["preph4", "Lecture d'une lettre ou d'un message de la mariée"],
+      ["preph5", "Départ vers la cérémonie"]
+    ]},
+    { id: "first", label: "First look", items: [
+      ["first1", "Le marié qui attend de dos"],
+      ["first2", "Sa réaction quand il se retourne"],
+      ["first3", "Les premiers mots, l'émotion des deux"]
+    ]},
+    { id: "mairie", label: "Mairie (cérémonie civile)", items: [
+      ["mairie1", "Arrivée des invités et des mariés"],
+      ["mairie2", "Entrée dans la salle"],
+      ["mairie3", "Le « oui » de chacun"],
+      ["mairie4", "Échange des alliances en gros plan"],
+      ["mairie5", "Signature du registre par les mariés et les témoins"],
+      ["mairie6", "Sortie : riz, pétales, bulles, applaudissements"]
+    ]},
+    { id: "ceremonie", label: "Cérémonie religieuse ou laïque", items: [
+      ["ceremonie1", "Plan large du lieu et de la décoration"],
+      ["ceremonie2", "Le marié qui attend, puis sa réaction à l'arrivée de la mariée"],
+      ["ceremonie3", "Entrée de la mariée au bras de son père ou d'un proche"],
+      ["ceremonie4", "Vœux et lectures (vérifier le son)"],
+      ["ceremonie5", "Échange des alliances en gros plan"],
+      ["ceremonie6", "Premier baiser"],
+      ["ceremonie7", "Réactions des parents et des invités"],
+      ["ceremonie8", "Chants, musique, chorale"],
+      ["ceremonie9", "Sortie des mariés et haie d'honneur"]
     ]},
     { id: "couple", label: "Shooting couple", items: [
-      ["s1", "Marche main dans la main (de face et de dos)"],
-      ["s2", "Regards et front contre front, en gros plan"],
-      ["s3", "Ralenti 120 images/s : voile, robe qui tourne"],
-      ["s4", "Plans en mouvement : passer derrière une feuille ou un objet"],
-      ["s5", "Lumière dorée en fin de journée"],
-      ["s6", "Une trend demandée par les mariés"]
+      ["couple1", "Marche main dans la main, de face et de dos"],
+      ["couple2", "Regards et front contre front, en gros plan"],
+      ["couple3", "Ralentis : voile, robe qui tourne"],
+      ["couple4", "Plans en mouvement : passer derrière une feuille ou un objet"],
+      ["couple5", "Lumière dorée de fin de journée"],
+      ["couple6", "Mains et alliances en gros plan"],
+      ["couple7", "Trend demandée par les mariés"]
     ]},
-    { id: "rec", label: "Réception", items: [
-      ["r1", "Décoration de la salle et des tables, avant l'arrivée des invités"],
-      ["r2", "Entrée des mariés"],
-      ["r3", "Discours et réactions"],
-      ["r4", "Découpe du gâteau"],
-      ["r5", "Première danse"],
-      ["r6", "Lancer de bouquet"],
-      ["r7", "Ambiance dancefloor et invités qui s'amusent"]
+    { id: "groupes", label: "Photos de groupe et famille", items: [
+      ["groupes1", "Les mariés avec les parents et grands-parents"],
+      ["groupes2", "Témoins, demoiselles et garçons d'honneur"],
+      ["groupes3", "Plan large avec tous les invités"],
+      ["groupes4", "Moment fun avec le cortège"]
+    ]},
+    { id: "cocktail", label: "Cocktail ou vin d'honneur", items: [
+      ["cocktail1", "Ambiance des invités et toasts"],
+      ["cocktail2", "Buffet, décoration et détails"],
+      ["cocktail3", "Musique live ou animation"],
+      ["cocktail4", "Les mariés qui saluent leurs invités"]
+    ]},
+    { id: "salle", label: "Entrée en salle", items: [
+      ["salle1", "Décoration de la salle avant l'arrivée des invités : tables, plan de table, centres de table"],
+      ["salle2", "Arrivée des invités"],
+      ["salle3", "Entrée des mariés et réactions de la salle"]
+    ]},
+    { id: "discours", label: "Discours et animations", items: [
+      ["discours1", "Discours des témoins et des parents"],
+      ["discours2", "Réactions des mariés pendant les discours"],
+      ["discours3", "Surprises : danse, vidéo, chanson des invités"],
+      ["discours4", "Jeux et animations"]
+    ]},
+    { id: "gateau", label: "Gâteau ou pièce montée", items: [
+      ["gateau1", "Le gâteau en détail, avant la découpe"],
+      ["gateau2", "La découpe"],
+      ["gateau3", "Les mariés qui se font goûter, champagne"]
+    ]},
+    { id: "bal", label: "Ouverture de bal", items: [
+      ["bal1", "Première danse : plan large et gros plans"],
+      ["bal2", "Danse avec les parents"],
+      ["bal3", "Les invités qui rejoignent la piste"]
+    ]},
+    { id: "bouquet", label: "Lancer de bouquet ou jarretière", items: [
+      ["bouquet1", "Les invités qui se préparent"],
+      ["bouquet2", "Le lancer, la personne qui l'attrape et sa réaction"]
+    ]},
+    { id: "soiree", label: "Soirée", items: [
+      ["soiree1", "Ambiance du dancefloor, invités qui s'amusent"],
+      ["soiree2", "Les mariés qui dansent"],
+      ["soiree3", "Moments fun : photobooth, accessoires, chorégraphies"]
+    ]},
+    { id: "fin", label: "Fin de soirée", items: [
+      ["fin1", "Feu d'artifice, étincelles ou lanternes"],
+      ["fin2", "Départ des mariés"]
+    ]},
+    { id: "brunch", label: "Brunch du lendemain", items: [
+      ["brunch1", "Ambiance détendue et retrouvailles"],
+      ["brunch2", "Les mariés qui racontent leur journée"]
     ]}
   ];
   const BEFORE = [
@@ -249,17 +322,30 @@ textarea { min-height: 90px; resize: vertical; }
   const today = () => { const d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); };
   const fmtDate = d => { const x = new Date(d + "T12:00"); return DAYS[x.getDay()] + " " + x.getDate() + " " + MONTHS[x.getMonth()] + " " + x.getFullYear(); };
   const daysUntil = d => Math.round((new Date(d + "T12:00") - new Date(today() + "T12:00")) / 864e5);
-  const allShotIds = r => [...SHOTS.flatMap(g => g.items.map(i => i[0])), ...(r.extras || []).map((_, i) => "x" + i)];
+  const allShotIds = r => [...SHOTS.filter(g => !r.skip?.[g.id]).flatMap(g => g.items.map(i => i[0])), ...(r.extras || []).map((_, i) => "x" + i)];
   const progress = r => { const ids = allShotIds(r); const done = ids.filter(id => r.shots?.[id]).length; return [done, ids.length]; };
   const el = (tag, props = {}, ...kids) => { const e = Object.assign(document.createElement(tag), props); e.append(...kids); return e; };
 
   let col = null, rows = [], current = null, tab = "planning", canWrite = true, editing = null;
+  const ME_KEY = "linstant-jourj-moi";
+  let me = ""; try { me = localStorage.getItem(ME_KEY) || ""; } catch {}
 
   // ---------- Liste ----------
   function renderList() {
     const t = today();
-    const upcoming = rows.filter(r => r.date >= t).sort((a, b) => a.date.localeCompare(b.date));
-    const past = rows.filter(r => r.date < t).sort((a, b) => b.date.localeCompare(a.date));
+    const names = [...new Set(rows.map(r => (r.creatrice || "").trim()).filter(Boolean))].sort((a, b) => a.localeCompare(b, "fr"));
+    if (me && !names.includes(me)) me = "";
+    const who = $("who");
+    who.hidden = names.length < 1;
+    who.replaceChildren(el("span", { className: "who-label", textContent: "Mariages de :" }), ...["", ...names].map(n => {
+      const b = el("button", { type: "button", className: "chip-btn", textContent: n || "Toutes" });
+      b.setAttribute("aria-pressed", n === me);
+      b.addEventListener("click", () => { me = n; try { localStorage.setItem(ME_KEY, me); } catch {} renderList(); });
+      return b;
+    }));
+    const mine = rows.filter(r => !me || (r.creatrice || "").trim() === me);
+    const upcoming = mine.filter(r => r.date >= t).sort((a, b) => a.date.localeCompare(b.date));
+    const past = mine.filter(r => r.date < t).sort((a, b) => b.date.localeCompare(a.date));
     const card = r => {
       const [done, total] = progress(r);
       const n = daysUntil(r.date);
@@ -278,8 +364,9 @@ textarea { min-height: 90px; resize: vertical; }
     $("past-days").replaceChildren(...past.map(card));
     $("past-wrap").hidden = !past.length;
     $("past-sum").textContent = "Journées passées (" + past.length + ")";
-    $("list-status").hidden = rows.length > 0;
-    if (!rows.length) $("list-status").textContent = canWrite
+    $("list-status").hidden = mine.length > 0;
+    if (!mine.length && me) $("list-status").textContent = "Aucun mariage pour " + me + " sur ce téléphone.";
+    else if (!rows.length) $("list-status").textContent = canWrite
       ? "Aucune journée sur ce téléphone. Prépare un mariage avec « + Nouvelle journée », ou ouvre le lien reçu par WhatsApp."
       : "Aucune journée préparée pour l'instant.";
   }
@@ -328,10 +415,16 @@ textarea { min-height: 90px; resize: vertical; }
 
     if (tab === "plans") {
       const [done, total] = progress(r);
-      p.append(el("p", { className: "muted", textContent: done + " plans filmés sur " + total + ". Coche au fur et à mesure." }));
+      p.append(el("p", { className: "muted", textContent: done + " plan" + (done > 1 ? "s" : "") + " filmé" + (done > 1 ? "s" : "") + " sur " + total + ". Coche au fur et à mesure, et appuie sur le compteur d'un moment s'il n'est pas prévu." }));
       SHOTS.forEach(g => {
+        const skipped = !!r.skip?.[g.id];
         const d = g.items.filter(i => r.shots?.[i[0]]).length;
-        p.append(el("section", { className: "group" }, el("h2", {}, g.label, el("span", { textContent: d + " / " + g.items.length })), ...g.items.map(([k, label]) => checkRow("shots", k, label, r))));
+        const sw = el("button", { type: "button", className: "skip" + (skipped ? " is-off" : ""), textContent: skipped ? "Pas prévu" : d + " / " + g.items.length });
+        sw.title = skipped ? "Appuie pour remettre ce moment" : "Appuie si ce moment n'est pas prévu";
+        sw.addEventListener("click", () => toggle("skip", g.id, !skipped));
+        const sec = el("section", { className: "group" + (skipped ? " skipped" : "") }, el("h2", {}, g.label, sw));
+        if (!skipped) sec.append(...g.items.map(([k, label]) => checkRow("shots", k, label, r)));
+        p.append(sec);
       });
       const extras = r.extras || [];
       const grp = el("section", { className: "group" }, el("h2", {}, "Demandes des mariés", el("span", { textContent: extras.filter((_, i) => r.shots?.["x" + i]).length + " / " + extras.length })),
