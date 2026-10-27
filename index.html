@@ -204,6 +204,9 @@ h2 em { font-style: italic; color: var(--accent); }
 .c li { display: flex; gap: 10px; }
 .c li::before { content: "✦"; color: var(--accent); font-size: 12px; line-height: 2.2; }
 .c.star li::before { color: var(--on-hero); }
+.pick { display: block; text-align: center; text-decoration: none; font-weight: 500; padding: 13px 16px; border-radius: 999px; background: var(--accent); color: var(--btn-ink); transition: transform .2s ease; }
+.pick:hover { transform: translateY(-2px); }
+.pick-star { background: var(--ivory); color: var(--night); }
 .deliv { margin-top: auto; background: var(--blush); border-radius: 10px; padding: 12px 14px; font-size: 15px; }
 .c.star .deliv { background: var(--chip); }
 .deliv b { font-weight: 600; }
@@ -354,37 +357,37 @@ footer .wrap { padding-block: 28px; display: flex; flex-wrap: wrap; justify-cont
 
   <section class="prices" id="collections">
     <div class="wrap">
-      <p class="eyebrow">Tarifs 2027 · 60&nbsp;€ de l'heure</p>
+      <p class="eyebrow">Nos formules</p>
       <h2>Trois <em>collections</em></h2>
-      <p class="lede">Un tarif simple : 60&nbsp;€ par heure de présence. Chaque collection comprend des montages verticaux au choix, prêts à poster sur Instagram et TikTok, livrés sous 48&nbsp;heures maximum.</p>
+      <p class="lede">Chaque collection comprend des montages verticaux au choix, prêts à poster sur Instagram et TikTok, livrés sous 48&nbsp;heures maximum. Choisissez celle qui vous ressemble et réservez votre appel découverte : on en parle ensemble.</p>
       <div class="coll">
         <article class="c">
           <p class="eyebrow">Collection</p>
           <h3>Intime</h3>
-          <p class="price"><b>240&nbsp;€</b></p>
-          <p class="hours">4&nbsp;h de présence × 60&nbsp;€</p>
+          <p class="hours">4&nbsp;h de présence</p>
           <ul><li>Préparatifs</li><li>Cérémonie</li><li>Shooting couple</li></ul>
           <p class="deliv"><b>2 montages</b> au choix (Reels / TikTok), livrés sous 48&nbsp;h</p>
+          <a class="pick" href="https://cal.com/l-instant.reel/appel-decouverte?notes=Je%20suis%20int%C3%A9ress%C3%A9%28e%29%20par%20la%20Collection%20Intime" target="_blank" rel="noopener">Je suis intéressé(e) par cette formule</a>
         </article>
         <article class="c star">
           <span class="badge">La plus choisie</span>
           <p class="eyebrow">Collection</p>
           <h3>Signature</h3>
-          <p class="price"><b>480&nbsp;€</b></p>
-          <p class="hours">8&nbsp;h de présence × 60&nbsp;€</p>
+          <p class="hours">8&nbsp;h de présence</p>
           <ul><li>Préparatifs</li><li>Cérémonie religieuse ou laïque</li><li>Shooting vidéo couple</li><li>Réception</li></ul>
           <p class="deliv"><b>3 montages</b> au choix (Reels / TikTok), livrés sous 48&nbsp;h</p>
+          <a class="pick pick-star" href="https://cal.com/l-instant.reel/appel-decouverte?notes=Je%20suis%20int%C3%A9ress%C3%A9%28e%29%20par%20la%20Collection%20Signature" target="_blank" rel="noopener">Je suis intéressé(e) par cette formule</a>
         </article>
         <article class="c">
           <p class="eyebrow">Collection</p>
           <h3>Éternité</h3>
-          <p class="price"><b>720&nbsp;€</b></p>
-          <p class="hours">12&nbsp;h de présence × 60&nbsp;€</p>
+          <p class="hours">12&nbsp;h de présence</p>
           <ul><li>Préparatifs</li><li>Cérémonie civile (captation) et cérémonie religieuse</li><li>Shooting vidéo couple</li><li>Réception</li><li>Lancer de bouquet</li></ul>
           <p class="deliv"><b>4 montages</b> au choix (Reels / TikTok), livrés sous 48&nbsp;h</p>
+          <a class="pick" href="https://cal.com/l-instant.reel/appel-decouverte?notes=Je%20suis%20int%C3%A9ress%C3%A9%28e%29%20par%20la%20Collection%20%C3%89ternit%C3%A9" target="_blank" rel="noopener">Je suis intéressé(e) par cette formule</a>
         </article>
       </div>
-      <p class="note">Heure supplémentaire : 60&nbsp;€. Hors frais de déplacement pour la Guadeloupe et l'international. Le devis exact se fait après l'appel découverte.</p>
+      <p class="note">Le tarif dépend de la durée de présence et du lieu. Vous recevez votre devis personnalisé juste après l'appel découverte.</p>
     </div>
   </section>
 
