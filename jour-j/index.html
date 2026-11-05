@@ -126,6 +126,9 @@ textarea { min-height: 90px; resize: vertical; }
 .skip { flex: none; white-space: nowrap; border: 1px solid var(--line); background: transparent; border-radius: 999px; padding: 2px 10px; font-size: 12px; letter-spacing: 0; text-transform: none; color: var(--muted); font-variant-numeric: tabular-nums; }
 .skip.is-off { border-style: dashed; }
 .group.skipped { opacity: .6; padding-bottom: 6px; }
+.import-box { margin-top: 20px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 12px 16px; }
+.import-box summary { cursor: pointer; font-weight: 500; }
+.import-box .add-row { margin-top: 10px; }
 .head-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 .toast { margin: 4px 0 0; font-size: 14px; color: var(--ok); }
 .share-box { display: grid; gap: 8px; }
@@ -147,6 +150,11 @@ textarea { min-height: 90px; resize: vertical; }
     <div class="who" id="who" hidden></div>
     <div id="list-status" class="empty">Chargement des journées…</div>
     <div class="days" id="days"></div>
+    <details class="import-box" id="import-box">
+      <summary>Coller une fiche reçue</summary>
+      <div class="add-row"><input id="imp" placeholder="Colle ici le lien reçu par WhatsApp" autocomplete="off"><button type="button" class="primary" id="imp-go">Ajouter</button></div>
+      <p class="muted" id="imp-msg" hidden></p>
+    </details>
     <details class="past-days" id="past-wrap" hidden><summary id="past-sum">Journées passées</summary><div class="days" id="past-days"></div></details>
   </section>
 
@@ -535,20 +543,34 @@ textarea { min-height: 90px; resize: vertical; }
   };
 
   // Fiche reçue par lien : on garde les coches déjà faites sur ce téléphone
-  function importFromHash() {
-    const m = location.hash.match(/^#j=(.+)$/);
-    if (!m) return;
+  // Ajoute une fiche à partir d'un lien reçu (ouvert directement ou collé dans l'appli)
+  function importLink(text) {
+    const m = String(text || "").match(/#j=([A-Za-z0-9_-]+)/);
+    if (!m) return null;
     try {
       const f = dec(m[1]);
-      if (!f.id || !f.date) return;
+      if (!f.id || !f.date) return null;
       const old = store[f.id] || {};
       store[f.id] = { ...f, shots: old.shots || {}, prep: old.prep || {}, extras: (old.extras && old.extras.length ? old.extras : f.extras) || [] };
       save(store);
-      history.replaceState(null, "", location.pathname);
-      current = f.id; tab = "planning";
-    } catch {}
+      // la fiche doit se voir, même si un autre prénom était sélectionné
+      if (me && (f.creatrice || "").trim() !== me) { me = ""; try { localStorage.setItem(ME_KEY, ""); } catch {} }
+      return f;
+    } catch { return null; }
+  }
+  function importFromHash() {
+    const f = importLink(location.hash);
+    if (!f) return;
+    history.replaceState(null, "", location.pathname);
+    current = f.id; tab = "planning";
   }
   importFromHash();
+  $("imp-go").addEventListener("click", () => {
+    const f = importLink($("imp").value);
+    $("imp-msg").hidden = false;
+    if (f) { $("imp").value = ""; $("imp-msg").textContent = "Fiche ajoutée : " + f.couple; current = f.id; tab = "planning"; sync(); }
+    else $("imp-msg").textContent = "Ce lien n'est pas une fiche Jour J. Colle le lien complet reçu par WhatsApp (il contient « #j= »).";
+  });
   window.addEventListener("hashchange", () => { importFromHash(); sync(); });
 
   $("share-day").addEventListener("click", async () => {
